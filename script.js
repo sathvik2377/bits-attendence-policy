@@ -5,7 +5,7 @@ function setupPetitionCounter() {
 
     if (!counter || !lastUpdated) return;
 
-    let currentCount = 2216; // Fallback count
+    let currentCount = 2220; // Current actual count
     let updateInterval = 60000; // 1 minute
     let lastFetchTime = Date.now();
 
