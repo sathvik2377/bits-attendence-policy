@@ -321,9 +321,9 @@ function setupRandomPopups() {
         "<strong>Exposed:</strong> Taking worst IIT aspects while charging 3x more",
         "<strong>Urgent:</strong> This will spread to all batches if we don't stop it now",
         "<strong>Hypocrisy:</strong> IIT charges ₹10L/4yrs, BITS charges ₹30L/4yrs",
-        "<strong>Cultural destruction:</strong> 60+ years of freedom being destroyed",
+        "<strong>Cultural change:</strong> 60+ years of freedom being altered",
         "<strong>False promises:</strong> VC praised 0% attendance just months ago",
-        "<strong>Ex-IIT agenda:</strong> Current VC destroying BITS unique culture",
+        "<strong>Preserve BITS culture:</strong> Don't want IIT policies in BITS",
         "<strong>Join the resistance:</strong> 2200+ students already signed",
         "<strong>Act now:</strong> Sign before they implement this policy"
     ];
