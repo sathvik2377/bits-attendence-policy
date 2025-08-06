@@ -1,18 +1,69 @@
-// Dynamic Petition Counter
+// Dynamic Petition Counter - Fetches real data from Change.org
 function setupPetitionCounter() {
     const counter = document.getElementById('petition-counter');
     const lastUpdated = document.getElementById('last-updated');
-    
-    if (!counter || !lastUpdated) return;
-    
-    let currentCount = 2216; // Actual current count
-    let updateInterval = 30000; // 30 seconds
-    
-    function updateCounter() {
-        // Simulate realistic growth (1-5 signatures every 30 seconds)
-        const increment = Math.floor(Math.random() * 5) + 1;
-        currentCount += increment;
 
+    if (!counter || !lastUpdated) return;
+
+    let currentCount = 2216; // Fallback count
+    let updateInterval = 60000; // 1 minute
+    let lastFetchTime = Date.now();
+
+    // Function to fetch actual petition count
+    async function fetchPetitionCount() {
+        const petitionUrl = 'https://www.change.org/p/bits-pilani-administration-preserve-bits-pilani-s-0-attendance-policy-reject-mandatory-attendance';
+
+        // Try multiple CORS proxies in case one fails
+        const proxies = [
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+
+        for (const proxyUrl of proxies) {
+            try {
+                const response = await fetch(proxyUrl + encodeURIComponent(petitionUrl), {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                    }
+                });
+
+                if (!response.ok) continue;
+
+                const html = await response.text();
+
+                // Extract signature count from the HTML using multiple patterns
+                const patterns = [
+                    /([0-9,]+)\s*(?:supporters?|signatures?|people have signed)/i,
+                    /data-signers-count="([0-9,]+)"/i,
+                    /"signers_count":([0-9]+)/i,
+                    /supporters-count[^>]*>([0-9,]+)/i,
+                    /([0-9,]+)\s*people/i
+                ];
+
+                for (const pattern of patterns) {
+                    const match = html.match(pattern);
+                    if (match) {
+                        const newCount = parseInt(match[1].replace(/,/g, ''));
+                        if (!isNaN(newCount) && newCount > 1000) { // Sanity check
+                            console.log(`Fetched count: ${newCount} using proxy: ${proxyUrl}`);
+                            return newCount;
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.log(`Proxy ${proxyUrl} failed:`, error.message);
+                continue;
+            }
+        }
+
+        console.log('All proxies failed, using cached value');
+        return null; // Return null if all proxies failed
+    }
+
+    function updateAllCounters(count) {
         // Get all counter elements
         const allCounters = [
             document.getElementById('petition-counter'),
@@ -30,26 +81,52 @@ function setupPetitionCounter() {
                     counterElement.style.color = '#c0392b';
 
                     setTimeout(() => {
-                        counterElement.textContent = currentCount.toLocaleString();
+                        counterElement.textContent = count.toLocaleString();
                         counterElement.style.transform = 'scale(1)';
                         counterElement.style.color = '#e74c3c';
                     }, 200);
                 } else {
                     // Update other counters without animation
-                    counterElement.textContent = currentCount.toLocaleString();
+                    counterElement.textContent = count.toLocaleString();
                 }
             }
         });
+    }
 
-        // Update timestamp
-        const timeAgo = Math.floor(Math.random() * 5) + 1; // 1-5 minutes ago
-        if (lastUpdated) {
-            lastUpdated.textContent = `${timeAgo} min ago`;
+    async function updateCounter() {
+        const fetchedCount = await fetchPetitionCount();
+
+        if (fetchedCount && fetchedCount !== currentCount) {
+            // Real update from petition site
+            currentCount = fetchedCount;
+            updateAllCounters(currentCount);
+            lastFetchTime = Date.now();
+
+            if (lastUpdated) {
+                lastUpdated.textContent = 'Live from Change.org';
+                lastUpdated.classList.add('live');
+
+                // Remove live indicator after 10 seconds
+                setTimeout(() => {
+                    lastUpdated.classList.remove('live');
+                    lastUpdated.textContent = 'Just updated';
+                }, 10000);
+            }
+        } else {
+            // No change or fetch failed, update timestamp only
+            const minutesAgo = Math.floor((Date.now() - lastFetchTime) / 60000);
+            if (lastUpdated) {
+                lastUpdated.classList.remove('live');
+                lastUpdated.textContent = minutesAgo === 0 ? 'Just updated' : `${minutesAgo} min ago`;
+            }
         }
     }
-    
-    // Update immediately and then every 30 seconds
+
+    // Initial load
+    updateAllCounters(currentCount);
     updateCounter();
+
+    // Check for updates every minute
     setInterval(updateCounter, updateInterval);
     
     // Add hover effect to counter

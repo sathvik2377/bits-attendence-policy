@@ -702,6 +702,22 @@ body {
     margin-top: 5px;
 }
 
+.counter-update.live {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.counter-update.live::before {
+    content: "🔴 ";
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
 .petition-button {
     display: block;
     width: 100%;
