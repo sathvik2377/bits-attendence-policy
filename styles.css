@@ -2114,76 +2114,55 @@ body {
 .footer {
     background: #2c3e50;
     color: #fff;
-    padding: 40px 0 20px;
+    padding: 30px 0 20px;
 }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 30px;
+.footer-linear {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .footer-logo h3 {
     font-family: 'Playfair Display', serif;
     font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.footer-logo p {
-    font-size: 14px;
-    color: #bdc3c7;
-}
-
-.footer-links h4,
-.footer-social h4 {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: #ecf0f1;
-}
-
-.footer-links ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 8px;
-}
-
-.footer-links a {
-    color: #bdc3c7;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s;
-}
-
-.footer-links a:hover {
+    margin-bottom: 5px;
     color: #e74c3c;
 }
 
-.social-links {
-    display: flex;
-    gap: 15px;
+.footer-logo p {
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    margin: 0;
+    font-style: italic;
 }
 
-.social-link {
+.footer-links-linear {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.footer-links-linear a {
     color: #bdc3c7;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.9rem;
     transition: color 0.3s;
+    white-space: nowrap;
 }
 
-.social-link:hover {
+.footer-links-linear a:hover {
     color: #e74c3c;
 }
 
 .footer-bottom {
     text-align: center;
-    padding-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #34495e;
-    font-size: 12px;
+    font-size: 0.9rem;
     color: #95a5a6;
 }
 
@@ -2218,10 +2197,15 @@ body {
         gap: 30px;
     }
 
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
+    .footer-linear {
+        flex-direction: column;
         text-align: center;
+        gap: 15px;
+    }
+
+    .footer-links-linear {
+        gap: 15px;
+        justify-content: center;
     }
 
     .share-buttons {
