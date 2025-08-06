@@ -5,7 +5,7 @@ function setupPetitionCounter() {
     
     if (!counter || !lastUpdated) return;
     
-    let currentCount = 2847; // More realistic current count
+    let currentCount = 2216; // Actual current count
     let updateInterval = 30000; // 30 seconds
     
     function updateCounter() {
@@ -247,7 +247,7 @@ function setupRandomPopups() {
         "<strong>Cultural destruction:</strong> 60+ years of freedom being destroyed",
         "<strong>False promises:</strong> VC praised 0% attendance just months ago",
         "<strong>Ex-IIT agenda:</strong> Current VC destroying BITS unique culture",
-        "<strong>Join the resistance:</strong> 2800+ students already signed",
+        "<strong>Join the resistance:</strong> 2200+ students already signed",
         "<strong>Act now:</strong> Sign before they implement this policy"
     ];
 
